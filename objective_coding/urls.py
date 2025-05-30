@@ -19,4 +19,5 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',include('main.urls')), # Add default address routing for page to the form
 ]
