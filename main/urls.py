@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import displayTableView
+from .views import loadJsonTableFormat
 
 urlpatterns = [
-	path("", displayTableView, name="tableView") # When nothing in url, route to the table view
+	path("", loadJsonTableFormat, name="tableView") # When nothing in url, route to the table view
 ]

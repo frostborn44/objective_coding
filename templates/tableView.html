@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Job Applicants Report</title>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.9.1/build/cssreset/cssreset-min.css">
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.9.1/build/cssbase/cssbase-min.css">
+    <style type="text/css">
+      #page {
+        width: 1200px;
+        margin: 30px auto;
+      }
+      .job-applicants {
+        width: 100%;
+      }
+      .job-name {
+        text-align: center;
+      }
+      .applicant-name {
+        width: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="page">
+      <table class="job-applicants">
+        <thead>
+          <tr>
+            <th>Job</th>
+            <th>Applicant Name</th>
+            <th>Email Address</th>
+            <th>Website</th>
+            <th>Skills</th>
+            <th>Cover Letter Paragraph</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- Table of Jobs, Applicants, their skills, and the cover letter -->
+          {% for job in d.jobs %} <!-- for each possible job type -->
+          <tr>
+            <td rowspan="{{job.rows}}" class="job-name">{{ job.name }}</td>
+            {% for person in d.applicants %} <!-- for each person applicant -->
+              {% if person.job_id == job.id %} <!-- only list if it falls under the current job type -->
+                <td rowspan="{{person.skillCount}}" class="applicant-name">{{ person.name }}</td>
+                <td rowspan="{{person.skillCount}}"><a href="mailto:{{person.email}}">{{ person.email }}</a></td>
+                <td rowspan="{{person.skillCount}}"><a href="http://{{person.website}}">{{ person.website }}</a></td>
+                <td>{{ person.firstSkill }}</td> <!-- forced first line, so it wont break the order of columns/rows -->
+                <td rowspan="{{person.skillCount}}">{{ person.cover_letter }}</td>
+                </tr>
+                  {% for skill in d.skills %} <!-- for each skill total possible (list) -->
+                    {% if person.id == skill.applicant_id and person.skillCount > 1 %}  <!-- if applicant can do skill, list it -->
+                      <tr>
+                        <td>{{ skill.name }}</td>
+                      </tr>
+                    {% endif %} 
+                  {% endfor %} <!-- end skill list -->
+                <tr>
+              {% endif %} <!-- end if job type adding -->
+            {% endfor %} <!-- end each person -->
+          </tr>
+          {% endfor %} <!-- end job type -->
+              
+
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td colspan="6">{{ ac }} Applicants, {{ sc }} Unique Skills</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </body>
+</html>
